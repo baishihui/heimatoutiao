@@ -6,18 +6,25 @@
     <img src="../../assets/img/logo_index.png" alt="">
 </div>
 <!-- 表单 -->
-<el-form style="margin-top:30px">
+ <!-- 登录表单 表单容器  el-form 需要绑定model属性 rules属性绑定验证规则对象-->
+<el-form :rules="loginRules" :model="loginForm" style="margin-top:30px">
     <!-- 表单域 -->
-    <el-form-item>
-         <el-input placeholder="请输入手机号"></el-input>
+    <!-- 手机号 -->
+   <!-- 表单域 el-form-item => 一行   => 校验 => prop => 要检验的字段名-->
+    <el-form-item prop="mobel">
+        <!-- 实际组件的 双向绑定 v-model-->
+         <el-input v-model="loginForm.mobel" placeholder="请输入手机号"></el-input>
     </el-form-item>
-   <el-form-item>
-         <el-input style="width:65%" placeholder="请输入验证码"></el-input>
+    <!-- 验证码 -->
+   <el-form-item prop="code">
+         <el-input v-model="loginForm.code" style="width:65%" placeholder="请输入验证码"></el-input>
          <el-button plain style="float:right">发送验证码</el-button>
    </el-form-item>
-    <el-form-item>
-   <el-checkbox>我已阅读并同意用户协议和隐私条款</el-checkbox>
+   <!-- 协议 -->
+    <el-form-item prop="check">
+   <el-checkbox v-model="loginForm.check">我已阅读并同意用户协议和隐私条款</el-checkbox>
     </el-form-item>
+
      <el-form-item>
    <el-button  type="primary" style="width:100%">登录</el-button>
     </el-form-item>
@@ -29,7 +36,20 @@
 
 <script>
 export default {
-
+  data () {
+    return {
+      // 定义一个表单数据对象
+      loginForm: {
+        mobel: '', // 手机号
+        code: '', // 验证码
+        check: false// 是否选中
+      },
+      loginRules: {
+        // 验证规则 验证登录表单的  key(字段名):value(数组)
+        // required true -> 必填
+      }
+    }
+  }
 }
 </script>
 
