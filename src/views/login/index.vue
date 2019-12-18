@@ -7,7 +7,7 @@
 </div>
 <!-- 表单 -->
  <!-- 登录表单 表单容器  el-form 需要绑定model属性 rules属性绑定验证规则对象-->
-<el-form :rules="loginRules" :model="loginForm" style="margin-top:30px">
+<el-form ref="myForm" :rules="loginRules" :model="loginForm" style="margin-top:30px">
     <!-- 表单域 -->
     <!-- 手机号 -->
    <!-- 表单域 el-form-item => 一行   => 校验 => prop => 要检验的字段名-->
@@ -26,7 +26,7 @@
     </el-form-item>
 
      <el-form-item>
-   <el-button  type="primary" style="width:100%">登录</el-button>
+   <el-button @click="submitLogin"  type="primary" style="width:100%">登录</el-button>
     </el-form-item>
 </el-form>
 
@@ -42,12 +42,40 @@ export default {
       loginForm: {
         mobel: '', // 手机号
         code: '', // 验证码
-        check: false// 是否选中
+        check: true// 是否选中
       },
       loginRules: {
         // 验证规则 验证登录表单的  key(字段名):value(数组)
         // required true -> 必填
+        mobel: [{ required: true, message: '请输入您的手机号' },
+          { pattern: /^1[3456789]\d{9}$/, message: '手机号格式不正确' }],
+        code: [{ required: true, message: '请输入验证码' },
+          {
+            pattern: /^\d{6}$/, message: '验证码格式不正确'
+          }],
+        check: [{ validator: function (rule, value, callback) {
+          //   rule当前的规则 没什么用
+          // value指的就是我们要校验的字段的值
+          if (value) {
+            //   认为校验通过
+            callback() // 直接执行callback 认为通过
+          } else {
+            //  认为校验不通过 要提示信息
+            callback(new Error('没有同意协议'))
+          }
+        } }]
       }
+    }
+  },
+  methods: {
+    submitLogin () {
+      // validate 对整个表单进行校验的方法
+      this.$refs.myForm.validate(function (isOk) {
+        if (isOk) {
+          // 认为前端校验登录表成功
+          console.log('前端校验成功，发送到后台校验')
+        }
+      })
     }
   }
 }
