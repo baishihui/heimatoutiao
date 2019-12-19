@@ -92,7 +92,6 @@ export default {
     .login-card {
         width: 440px;
         height: 350px;
-        margin-top: ;
         .title {
             text-align: center;
             img {
