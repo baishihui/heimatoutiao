@@ -3,7 +3,7 @@
     <!-- 放置一个外层容器 -->
     <el-container>
         <!-- 左右布局 -->
-        <el-aside style="background-color:#323745;height:100vh;width:230px">
+        <el-aside style="background-color:#323745;min-height:100vh;width:230px">
             <!-- 左侧导航 组件 -->
             <layout-aside></layout-aside>
             </el-aside>
@@ -16,7 +16,7 @@
               </el-header>
 
               <!-- 主要区域 -->
-              <el-main>
+              <el-main style="padding:0">
                   <!-- 二级路由容器 -->
                   <router-view></router-view>
               </el-main>
