@@ -11,9 +11,9 @@
     <!-- 表单域 -->
     <!-- 手机号 -->
    <!-- 表单域 el-form-item => 一行   => 校验 => prop => 要检验的字段名-->
-    <el-form-item prop="mobel">
+    <el-form-item prop="mobile">
         <!-- 实际组件的 双向绑定 v-model-->
-         <el-input v-model="loginForm.mobel" placeholder="请输入手机号"></el-input>
+         <el-input v-model="loginForm.mobile" placeholder="请输入手机号"></el-input>
     </el-form-item>
     <!-- 验证码 -->
    <el-form-item prop="code">
@@ -40,14 +40,14 @@ export default {
     return {
       // 定义一个表单数据对象
       loginForm: {
-        mobel: '', // 手机号
+        mobile: '', // 手机号
         code: '', // 验证码
         check: true// 是否选中
       },
       loginRules: {
         // 验证规则 验证登录表单的  key(字段名):value(数组)
         // required true -> 必填
-        mobel: [{ required: true, message: '请输入您的手机号' },
+        mobile: [{ required: true, message: '请输入您的手机号' },
           { pattern: /^1[3456789]\d{9}$/, message: '手机号格式不正确' }],
         code: [{ required: true, message: '请输入验证码' },
           {
@@ -70,10 +70,26 @@ export default {
   methods: {
     submitLogin () {
       // validate 对整个表单进行校验的方法
-      this.$refs.myForm.validate(function (isOk) {
+      this.$refs.myForm.validate((isOk) => {
         if (isOk) {
           // 认为前端校验登录表成功
-          console.log('前端校验成功，发送到后台校验')
+          // 地址参数  查询参数 params 对象
+          // body参数 data对象
+          this.$axios({
+            url: '/authorizations',
+            method: 'post',
+            data: this.loginForm
+          }).then((result) => {
+            // 成功以后才会进入then
+            window.localStorage.setItem('user-token', result.data.data.token) // 前端缓存 令牌
+            this.$router.push('/home') // 跳转到主页
+          }).catch(() => {
+            // UI自带的方法
+            this.$message({
+              message: '您的手机号或者验证码不正确',
+              type: 'warning'
+            })
+          })
         }
       })
     }
