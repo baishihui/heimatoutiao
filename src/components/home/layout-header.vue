@@ -12,14 +12,14 @@
           <el-row type="flex" justify="end" align="middle">
              <img :src="userInfo.photo ? userInfo.photo : defaultImg" alt="">
              <!-- 下拉列表 -->
-             <el-dropdown>
+             <el-dropdown @command="handle">
 
                <span>{{userInfo.name}}</span>
                <!-- 下拉菜单  具体插槽 -->
                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item>个人信息</el-dropdown-item>
-                  <el-dropdown-item>Git地址</el-dropdown-item>
-                  <el-dropdown-item>退出</el-dropdown-item>
+                  <el-dropdown-item command="info">个人信息</el-dropdown-item>
+                  <el-dropdown-item command="git">Git地址</el-dropdown-item>
+                  <el-dropdown-item command="lgout">退出</el-dropdown-item>
                </el-dropdown-menu>
              </el-dropdown>
           </el-row>
@@ -52,6 +52,18 @@ export default {
     }).then((result) => {
       this.userInfo = result.data.data // 获取用户个人信息
     })
+  },
+  methods: {
+    handle (command) {
+    //  区分点击的菜单项
+      if (command === 'lgout') {
+        // 退出
+        window.localStorage.removeItem('user-token') // 删除令牌
+        this.$router.push('/login')
+      } else if (command === 'git') {
+        window.location.href = 'https://github.com/baishihui/heimatoutiao'
+      }
+    }
   }
 }
 </script>
