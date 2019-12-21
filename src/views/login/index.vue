@@ -81,7 +81,7 @@ export default {
             data: this.loginForm
           }).then((result) => {
             // 成功以后才会进入then
-            window.localStorage.setItem('user-token', result.data.data.token) // 前端缓存 令牌
+            window.localStorage.setItem('user-token', result.data.token) // 前端缓存 令牌
             this.$router.push('/home') // 跳转到主页
           }).catch(() => {
             // UI自带的方法
