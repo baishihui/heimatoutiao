@@ -4,7 +4,7 @@ import router from '../router'
 router.beforeEach(function (to, from, next) {
 // 拦截谁 判断拦截地址
 //   console.log(to)
-  if (to.path !== '/login') {
+  if (to.path.startsWith === '/home') {
     //   判断有没有 token  有->放过   没有->跳转到 登录页面
     let token = window.localStorage.getItem('user-token') // 获取 令牌
 
