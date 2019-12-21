@@ -1,7 +1,7 @@
 <template>
   <!-- 头部组件 -->
   <!-- 行 -->
-  <el-row class="layout-header" type="flex"  align="middle" justify="space-between">
+  <el-row class="layout-header" type="flex"  align="middle" justify="space-between" v-cloak>
       <!-- 左侧 -->
         <el-col class="left" :span="7">
             <i class="el-icon-s-unfold"></i>
@@ -82,5 +82,8 @@ height: 60px;
     margin-right: 5px;
   }
 }
+}
+[v-cloak]{
+  display: none
 }
 </style>
