@@ -19,6 +19,10 @@ const routes = [{
     {
       path: '', // 二级路由什么都不写 ，默认 作为 显示组件
       component: Home2
+    },
+    {
+      path: 'comment', // 完整地址  相对地址
+      component: () => import('../views/comment')
     }
   ]
 },
