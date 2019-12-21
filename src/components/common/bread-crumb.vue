@@ -1,6 +1,6 @@
 <template>
 <!-- 面包屑的内容 -->
-<el-breadcrumb separator="/">
+<el-breadcrumb separator=">">
   <el-breadcrumb-item to="{ path: '/home' }">首页</el-breadcrumb-item>
   <el-breadcrumb-item>
          <!-- 具名插槽 -->
