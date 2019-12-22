@@ -1,6 +1,6 @@
 <template >
 <!-- 卡片组件 -->
-  <el-card>
+  <el-card v-loading="loading">
       <!-- 自己注册的面包屑组件 -->
     <bread-crumb slot="header">
     <!-- 插槽内容 -->
@@ -42,6 +42,7 @@
 export default {
   data () {
     return {
+      loading: false, // 加载状态  默认关闭
       list: [],
       page: {
         total: 0, // 总条目数
@@ -58,6 +59,7 @@ export default {
     },
     // 请求评论列表数据
     getComment () {
+      this.loading = true // 打开状态
       // axios 是默认是get类型
       // query 参数 / 路由参数 地址参数 get参数  axios  params
       // body参数 给 data
@@ -73,6 +75,10 @@ export default {
       }).then((result) => {
         this.list = result.data.results
         this.page.total = result.data.total_count // 当前总条目数
+        // setTimeout(() => {
+        //   this.loading = false
+        // }, 800)
+        this.loading = false
       })
     },
     // 定义一个布尔值转化方法
