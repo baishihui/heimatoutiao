@@ -24,6 +24,17 @@
            </template>
          </el-table-column>
      </el-table>
+     <!-- 分页组件 -->
+     <el-row type="flex" justify="center" align="middle" style="height:80px">
+       <el-pagination
+         background
+         layout="prev, pager, next"
+         :total="page.total"
+         :page-size="page.pageSize"
+         :current-page="page.currentPage"
+         @current-change='changePage'>
+</el-pagination>
+     </el-row>
   </el-card>
 </template>
 
@@ -31,23 +42,37 @@
 export default {
   data () {
     return {
-      list: []
+      list: [],
+      page: {
+        total: 0, // 总条目数
+        pageSize: 10, // 每页显示条目个数
+        currentPage: 1// 当前页数，
+      }
     }
   },
   methods: {
+    // 页码改变事件
+    changePage (newPage) {
+      this.page.currentPage = newPage // 改变当前页
+      this.getComment()
+    },
     // 请求评论列表数据
     getComment () {
       // axios 是默认是get类型
       // query 参数 / 路由参数 地址参数 get参数  axios  params
       // body参数 给 data
       // 身份信息 headers
+      // this.loading = true // 打开状态
       this.$axios({
         url: '/articles',
         params: {
-          response_type: 'comment'
+          response_type: 'comment',
+          page: this.page.currentPage,
+          per_page: this.page.pageSize
         }
       }).then((result) => {
         this.list = result.data.results
+        this.page.total = result.data.total_count // 当前总条目数
       })
     },
     // 定义一个布尔值转化方法
@@ -72,7 +97,7 @@ export default {
             article_id: row.id.toString()
           },
           data: {
-            allow_comment: !row.cocomment_status
+            allow_comment: !row.comment_status
           }
         }).then(result => {
           // 打开或关闭成功之后
@@ -80,9 +105,9 @@ export default {
             message: '操作成功',
             type: 'success'
           })
+          // 重新请求数据
+          this.getComment()
         })
-        // 重新请求数据
-        this.getComment()
       })
     }
 
