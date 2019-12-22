@@ -1,7 +1,7 @@
 <template>
   <!-- 头部组件 -->
   <!-- 行 -->
-  <el-row class="layout-header" type="flex"  align="middle" justify="space-between" v-cloak>
+  <el-row class="layout-header" type="flex"  align="middle" justify="space-between" >
       <!-- 左侧 -->
         <el-col class="left" :span="7">
             <i class="el-icon-s-unfold"></i>
@@ -10,7 +10,7 @@
          <!-- 右侧 -->
         <el-col class="right" :span="4">
           <el-row type="flex" justify="end" align="middle">
-             <img :src="userInfo.photo ? userInfo.photo : defaultImg" alt="">
+             <img :src="userInfo.photo ? userInfo.photo : defaultImg" alt="哈哈哈哈">
              <!-- 下拉列表 -->
              <el-dropdown @command="handle">
 
@@ -82,8 +82,5 @@ height: 60px;
     margin-right: 5px;
   }
 }
-}
-[v-cloak]{
-  display: none
 }
 </style>
