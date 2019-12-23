@@ -19,6 +19,18 @@
                         </el-row>
                    </el-card>
                </div>
+               <!-- 分页组件 -->
+               <el-row type="flex" justify="center" align="middle" style="height:80px">
+                 <el-pagination
+                    background
+                    layout="prev, pager, next"
+                    :total="page.total"
+                    :current-page="page.currentPage"
+                    :page-size="page.pageSize"
+                     @current-change="changePage"
+                     >
+                  </el-pagination>
+               </el-row>
             </el-tab-pane>
             <el-tab-pane label="收藏素材" name='collect'>
                 <!-- 收藏素材内容 -->
@@ -28,6 +40,18 @@
                         <img :src="item.url" alt="">
                    </el-card>
                </div>
+                  <!-- 分页组件 -->
+               <el-row type="flex" justify="center" align="middle" style="height:80px">
+                 <el-pagination
+                    background
+                    layout="prev, pager, next"
+                    :total="page.total"
+                    :current-page="page.currentPage"
+                    :page-size="page.pageSize"
+                     @current-change="changePage"
+                     >
+                  </el-pagination>
+               </el-row>
             </el-tab-pane>
     </el-tabs>
 </el-card>
@@ -38,12 +62,23 @@ export default {
   data () {
     return {
       activeName: 'all', // 默认选中全部
-      list: [] // 定义数组  接收全部数据
+      list: [], // 定义数组  接收全部数据
+      page: {
+        currentPage: 1, // 当前页码
+        pageSize: 8, // 每页多少条
+        total: 0 // 总条数
+      }
     }
   },
   methods: {
+    // 分页的方法
+    changePage (newPage) {
+      this.page.currentPage = newPage // 得到最新页码
+      this.getAllMaterial()
+    },
     //   切换tab事件
     changeTab () {
+      this.page.currentPage = 1 // 应该把当前页码回到第一页 如果不重置第一页 就会直接去找不到对应页码
       this.getAllMaterial()
     },
     //   获取所有素材/收藏
@@ -52,11 +87,14 @@ export default {
       this.$axios({
         url: '/user/images',
         params: {
-          collect: this.activeName === 'collect'
+          collect: this.activeName === 'collect',
+          page: this.page.currentPage,
+          per_page: this.page.pageSize
 
         }
       }).then((result) => {
         this.list = result.data.results
+        this.page.total = result.data.total_count // 获取总页数
       })
     }
 
