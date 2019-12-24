@@ -6,7 +6,7 @@
     </bread-crumb>
     <!-- 上传文件 -->
     <el-row type="flex" justify="end">
-       <el-upload :http-request="uploadImg" :show-file-list="false" action='1'>
+       <el-upload :http-request="uploadImg" :show-file-list="false" action=''>
       <el-button size="small" type="primary">点击上传</el-button>
     </el-upload>
     </el-row>
@@ -21,7 +21,8 @@
                         <img :src="item.url" alt="">
                         <!-- 图片下边的收藏 删除 -->
                         <el-row class="operate" type="flex" align="middle" justify="space-around">
-                           <i class="el-icon-star-on"></i>
+                         <!-- v-bind:style 根据收藏状态决定 显示图标的颜色-->
+                           <i @click="collectOrCancel(item)" :style= "{color :item.is_collected ? 'red' : ''}" class="el-icon-star-on"></i>
                            <i class="el-icon-delete-solid"></i>
                         </el-row>
                    </el-card>
@@ -79,6 +80,19 @@ export default {
     }
   },
   methods: {
+    // 收藏或取消收藏
+    collectOrCancel (row) {
+      this.$axios({
+        url: `/user/images/${row.id}`,
+        method: 'put',
+        data: {
+          collect: !row.is_collected // 取反 如果是true 就取消  如果是false 就收藏
+        }
+      }).then(() => {
+        // 重新获取素材
+        this.getAllMaterial()
+      })
+    },
     // 上传文件
     uploadImg (params) {
       this.loading = true // 打开进度条
@@ -148,7 +162,10 @@ export default {
         left: 0;
         background-color: #f4f5f6;
         height: 30px;
-        width: 100%
+        width: 100%;
+        i {
+        cursor: pointer;
+      }
     }
 }
 }
