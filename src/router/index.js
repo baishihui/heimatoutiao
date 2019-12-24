@@ -29,6 +29,11 @@ const routes = [{
     {
       path: 'material', // 完整地址  相对地址
       component: () => import('../views/material')
+    },
+    // 文章管理
+    {
+      path: 'articles', // 完整地址  相对地址
+      component: () => import('../views/articles')
     }
   ]
 },
