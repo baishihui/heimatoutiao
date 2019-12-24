@@ -51,15 +51,15 @@
         <span>共找到0条符合条件的内容</span>
     </el-row>
     <!-- 循环模板 -->
-     <el-row v-for="item in 100" :key="item" class='article-item' type="flex" justify="space-between">
+     <el-row v-for="item in list" :key="item.id.toString()" class='article-item' type="flex" justify="space-between">
          <!-- 左侧 -->
          <el-col :span="14" >
              <el-row type="flex">
-                  <img src="../../assets/img/404.png" alt="">
+                  <img :src="item.cover.images.length ? item.cover.images[0] : defaultImg" alt="">
              <div class="info">
-                 <span>大家好,今天是平安夜,晚上吃苹果</span>
-                 <el-tag class='tag'>标签一</el-tag>
-                 <span class='data'>2019-12-24 11:00:43</span>
+                 <span class="info-one">{{item.title }}</span>
+                 <el-tag :type="item.status | filterType" class='tag'>{{item.status| filterStatus}}</el-tag>
+                 <span class='data'>{{item.pubdate}}</span>
              </div>
              </el-row>
 
@@ -84,7 +84,46 @@ export default {
         channel_id: null, // 默认是空
         dateRange: [] // 默认为一个空数组
       },
-      channels: [] // 定义一个channels 接收频道
+      channels: [], // 定义一个channels 接收频道
+      list: [], // 接收文章列表数据
+      defaultImg: require('../../assets/img/404.png')
+    }
+  },
+  //   处理显示状态
+  filters: {
+    filterStatus (value) {
+    // value 是过滤器前面表达式计算的值
+      // 文章状态 0-草稿，1-待审核，2-审核通过，3-审核失败，4-已删除
+      switch (value) {
+        case 0:
+          return '草稿'
+        case 1:
+          return '待审核'
+        case 2:
+          return '审核通过'
+        case 3:
+          return '审核失败'
+
+        default:
+          break
+      }
+    },
+    filterType (value) {
+    // value 是过滤器前面表达式计算的值
+      // 文章状态 0-草稿，1-待审核，2-审核通过，3-审核失败，4-已删除
+      switch (value) {
+        case 0:
+          return 'warning'
+        case 1:
+          return 'info'
+        case 2:
+          return ''
+        case 3:
+          return 'danger'
+
+        default:
+          break
+      }
     }
   },
   methods: {
@@ -97,11 +136,20 @@ export default {
       }).then((result) => {
         this.channels = result.data.channels // 获取频道数据
       })
+    },
+    // 获取文章列表数据 分页 切换 / 条件切换
+    getArticles () {
+      this.$axios({
+        url: '/articles'
+      }).then((result) => {
+        this.list = result.data.results // 接收文章列表数据
+      })
     }
 
   },
   created () {
     this.getChannels() // 调用获取频道数据
+    this.getArticles() // 获取文章列表数据
   }
 }
 </script>
@@ -132,6 +180,9 @@ export default {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
+          .info-one{
+              overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+          }
           .tag {
               max-width:60px;
             }
