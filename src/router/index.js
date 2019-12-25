@@ -34,6 +34,11 @@ const routes = [{
     {
       path: 'articles', // 完整地址  相对地址
       component: () => import('../views/articles')
+    },
+    // 发表文章
+    {
+      path: 'publish',
+      component: () => import('../views/publish') // 按需加载
     }
   ]
 },
