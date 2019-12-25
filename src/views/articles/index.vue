@@ -70,7 +70,7 @@
          <el-col :span="6">
              <el-row class="right" type="flex" justify="end">
                 <span><i class="el-icon-edit"></i>修改</span>
-                <span><i class="el-icon-delete"></i>删除</span>
+                <span @click="delArticle(item.id)"><i class="el-icon-delete"></i>删除</span>
              </el-row>
          </el-col>
     </el-row>
@@ -147,6 +147,24 @@ export default {
     }
   },
   methods: {
+    // 删除文章
+    // 只能删除草稿
+    delArticle (id) {
+      // 友好提示
+      this.$confirm('您是否要删除这个文章？').then(() => {
+        // 调接口
+        this.$axios({
+          url: `/articles/${id.toString()}`,
+          method: 'delete'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '删除成功！'
+          })
+          this.getConditionArticle() // 重新调用
+        })
+      })
+    },
     // 改变页码事件
     changePage (newPage) {
       // 赋值当前页码
