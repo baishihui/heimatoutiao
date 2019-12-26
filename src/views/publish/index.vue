@@ -94,23 +94,63 @@ export default {
     // 发布文章
     publishArticle (draft) {
       this.$refs.publishForm.validate((isOk) => {
-        // 调用接口
-        this.$axios({
-          url: '/articles',
-          method: 'post',
-          params: {
-            draft
-          },
-          data: this.formData
-        }).then(() => {
-          // 新增成功，应该去内容列表
-          this.$router.push('/home/articles')
-        })
+        if (isOk) {
+          let { articleId } = this.$route.params // 获取动态路由参数
+          this.$axios({
+            url: articleId ? `/articles/${articleId}` : '/articles',
+            method: articleId ? 'put' : 'post',
+            params: {
+              draft
+            },
+            data: this.formData
+          }).then(result => {
+            this.$router.push('/home/articles') // 回到内容列表
+          })
+        }
+
+        // if (articleId) {
+        //   // 修改文章
+        //   this.$axios({
+        //     url: `/articles/${articleId}`,
+        //     method: 'put',
+        //     params: {
+        //       draft
+        //     },
+        //     data: this.formData
+        //   }).then(() => {
+        //     this.$router.push('/home/articles') // 回到内容列表
+        //   })
+        // } else {
+        //   // 调用接口  发布文章
+        //   this.$axios({
+        //     url: '/articles',
+        //     method: 'post',
+        //     params: {
+        //       draft
+        //     },
+        //     data: this.formData
+        //   }).then(() => {
+        //   // 新增成功，应该去内容列表
+        //     this.$router.push('/home/articles')
+        //   })
+        // }
+      })
+    },
+    // 获取文章详情 通过id
+    getAticleById (articleId) {
+      // 调接口
+      this.$axios({
+        url: `/articles/${articleId}`
+      }).then(result => {
+        this.formData = result.data // 将指定文章数据给 data数据
       })
     }
   },
   created () {
     this.getChannels() // 获取 频道数据
+    // 获取id 判断有无id 有id 就是修改 无id就是发表
+    let { articleId } = this.$route.params // 获取动态路由参数  articleId已经是字符串
+    articleId && this.getAticleById(articleId) // 获取文章数据
   }
 }
 </script>
