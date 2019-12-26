@@ -39,6 +39,11 @@ const routes = [{
     {
       path: 'publish',
       component: () => import('../views/publish') // 按需加载
+    },
+    // 修改文章
+    {
+      path: 'publish/:articleId',
+      component: () => import('../views/publish') // 按需加载
     }
   ]
 },

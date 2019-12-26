@@ -69,7 +69,7 @@
          <!-- 右侧 -->
          <el-col :span="6">
              <el-row class="right" type="flex" justify="end">
-                <span><i class="el-icon-edit"></i>修改</span>
+                <span @click="toModify(item.id)"><i class="el-icon-edit"></i>修改</span>
                 <span @click="delArticle(item.id)"><i class="el-icon-delete"></i>删除</span>
              </el-row>
          </el-col>
@@ -147,6 +147,10 @@ export default {
     }
   },
   methods: {
+    // 修改文章
+    toModify (id) {
+      this.$router.push(`/home/publish/${id.toString()}`) // 到发布页面
+    },
     // 删除文章
     // 只能删除草稿
     delArticle (id) {

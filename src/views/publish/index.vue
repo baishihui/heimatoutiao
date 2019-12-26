@@ -29,6 +29,7 @@
             </el-select>
         </el-form-item>
         <el-form-item>
+          <!-- （）不传 表示一个参数都没有 默认 false -->
             <el-button @click="publishArticle()" type="primary">发表</el-button>
              <el-button @click="publishArticle(true)">存入草稿</el-button>
         </el-form-item>
@@ -56,6 +57,28 @@ export default {
           { min: 5, max: 30, message: '标题长度需要在5到30字符之间' }],
         content: [{ required: true, message: '文章内容不能为空' }],
         channel_id: [{ required: true, message: '频道分类不能为空' }]
+      }
+    }
+  },
+  watch: {
+    $route: function (to, from) {
+      // console.log(to)
+      // 判断to.parmas是否为空
+      if (Object.keys(to.params).length) {
+        // 有参数 => 修改
+
+      } else {
+        // 无参数 => 发表
+        this.formData = {
+          title: '', // 文章标题
+          content: '', // 文章内容
+          cover: { // 文章封面
+            type: 0, // 封面类型 -1:自动，0-无图，1-1张，3-3张
+            images: [] // 存储的图片的地址
+          },
+          channel_id: null // 文章所属频道id
+
+        }
       }
     }
   },
