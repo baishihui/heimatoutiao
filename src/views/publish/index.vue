@@ -21,6 +21,7 @@
                 <el-radio :label="0">无图</el-radio>
                 <el-radio :label="-1">自动</el-radio>
             </el-radio-group>
+            {{formData.cover}}
         </el-form-item>
         <el-form-item label="频道" prop="channel_id">
             <!-- 下拉列表 -->
@@ -66,7 +67,7 @@ export default {
       // 判断to.parmas是否为空
       if (Object.keys(to.params).length) {
         // 有参数 => 修改
-
+        this.getAticleById(to.params.articleId)
       } else {
         // 无参数 => 发表
         this.formData = {
@@ -79,6 +80,17 @@ export default {
           channel_id: null // 文章所属频道id
 
         }
+      }
+    },
+    'formData.cover.type': function () {
+      // this指向组件实例
+      if (this.formData.cover.type === 0 || this.formData.cover.type === -1) {
+        // 无图或者自动
+        this.formData.cover.images = []
+      } else if (this.formData.cover.type === 1) {
+        this.formData.cover.images = [''] // 单图模式
+      } else if (this.formData.cover.type === 3) {
+        this.formData.cover.images = ['', '', ''] // 三图模式
       }
     }
   },
