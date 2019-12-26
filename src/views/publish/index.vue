@@ -21,8 +21,9 @@
                 <el-radio :label="0">无图</el-radio>
                 <el-radio :label="-1">自动</el-radio>
             </el-radio-group>
-            {{formData.cover}}
         </el-form-item>
+        <!-- 放置一个封面组件 父组件 => 子组件 props -->
+        <cover-image :list='formData.cover.images'></cover-image>
         <el-form-item label="频道" prop="channel_id">
             <!-- 下拉列表 -->
             <el-select v-model="formData.channel_id">
