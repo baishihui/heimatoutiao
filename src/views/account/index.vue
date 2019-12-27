@@ -9,7 +9,7 @@
 
     </el-upload>
     <!-- 放置表单组件 -->
-    <el-form :model="formData" :rules="rules" style="margin-left:100px" label-width="100px">
+    <el-form ref="myForm" :model="formData" :rules="rules" style="margin-left:100px" label-width="100px">
       <el-form-item prop="name" label="用户名">
           <el-input v-model="formData.name" style="width:30%"></el-input>
       </el-form-item>
@@ -23,7 +23,7 @@
           <el-input v-model="formData.mobile" disabled style="width:30%"></el-input>
       </el-form-item>
       <el-form-item>
-          <el-button  type="primary">保存信息</el-button>
+          <el-button @click="saveUserInfo"  type="primary">保存信息</el-button>
       </el-form-item>
     </el-form>
   </el-card>
@@ -64,6 +64,26 @@ export default {
         url: '/user/profile'
       }).then(result => {
         this.formData = result.data
+      })
+    },
+    // 总体校验
+    saveUserInfo () {
+      // 要去校验表单数据是否OK
+      this.$refs.myForm.validate((isOk) => {
+        if (isOk) {
+          // 调用保存方法
+          this.$axios({
+            url: '/user/profile',
+            method: 'patch',
+            data: this.formData
+          }).then(result => {
+            //   认为保存成功
+            this.$message({
+              type: 'success',
+              message: '保存信息成功'
+            })
+          })
+        }
       })
     }
   },
