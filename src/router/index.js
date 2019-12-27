@@ -22,6 +22,11 @@ const routes = [{
     },
     // 评论列表
     {
+      path: '/home/account', // 完整地址  相对地址
+      component: () => import('../views/account')
+    },
+    // 评论列表
+    {
       path: 'comment', // 完整地址  相对地址
       component: () => import('../views/comment')
     },
