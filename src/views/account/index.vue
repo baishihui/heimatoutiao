@@ -1,5 +1,5 @@
 <template>
-  <el-card>
+  <el-card v-loading='loading'>
     <bread-crumb slot="header">
       <template slot="title">账户信息</template>
     </bread-crumb>
@@ -59,6 +59,23 @@ export default {
     }
   },
   methods: {
+    //   上传图片
+    uploadImg (params) {
+      this.loading = true // 打开弹层
+      let data = new FormData() // 实例化对象
+      data.append('photo', params.file) // 加入参数
+      this.$axios({
+        url: '/user/photo',
+        method: 'patch',
+        data
+      }).then(result => {
+        this.formData.photo = result.data.photo // 设置头像地址
+        // eventBus.$emit('updateUserInfoSuccess') // 触发一个自定义事件 updateUserInfoSuccess
+
+        this.loading = false // 关调弹层
+      })
+    },
+    //   获取用户信息
     getUserInfo () {
       this.$axios({
         url: '/user/profile'
