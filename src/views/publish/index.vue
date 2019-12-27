@@ -23,7 +23,7 @@
             </el-radio-group>
         </el-form-item>
         <!-- 放置一个封面组件 父组件 => 子组件 props -->
-        <cover-image :list='formData.cover.images'></cover-image>
+        <cover-image @clickOneImg='receiveImg' :list='formData.cover.images'></cover-image>
         <el-form-item label="频道" prop="channel_id">
             <!-- 下拉列表 -->
             <el-select v-model="formData.channel_id">
@@ -96,6 +96,17 @@ export default {
     // }
   },
   methods: {
+    receiveImg (img, index) {
+      // Vue响应式原理 响应式数据 => 数据发生变化(要能被Vue监控到) => 视图变化
+      // 数组 => 新数组  =>就会触发响应式视图更新 => push/pop/shift/unshift/slice
+      // this.formData.cover.images = this.formData.cover.images.map(function (item, i) {
+      //   if (i === index) {
+      //     return img
+      //   }
+      //   return item
+      // })
+      this.formData.cover.images = this.formData.cover.images.map((item, i) => i === index ? img : item)
+    },
     // 切换类型时触发  该方法 只有点击切换时才会触发
     changeType () {
       // this指向组件实例
