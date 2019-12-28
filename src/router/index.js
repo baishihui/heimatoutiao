@@ -11,6 +11,12 @@ const routes = [
     path: '/',
     redirect: '/home'
   },
+  // 404
+  {
+    path: '*',
+    component: () => import('../views/404.vue')
+
+  },
   // 主页
   {
     path: '/home',
