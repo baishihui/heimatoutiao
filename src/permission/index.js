@@ -2,19 +2,18 @@
 import router from '../router'
 // 全局前置守卫
 router.beforeEach(function (to, from, next) {
-// 拦截谁 判断拦截地址
-//   console.log(to)
-  if (to.path.startsWith === '/home') {
-    //   判断有没有 token  有->放过   没有->跳转到 登录页面
-    let token = window.localStorage.getItem('user-token') // 获取 令牌
-
+  // 拦截谁 判断拦截地址
+  // 由于 某某框架升级了corejs版本 导致 字符串方式编译问题 判断 是否需要控制 先用不等于 login来判断
+  if (to.path.startsWith('/home')) {
+    //   进行权限判断 判断有无token 如果有token 放过 如果没有 回到登录页
+    let token = window.localStorage.getItem('user-token')
     if (token) {
-      // 直接放过
+    //    直接放过
       next()
     } else {
-      next('/login') // 强制跳转到 登录页面
+      next('/login') // 强制跳转到登录页
     }
   } else {
-    next()
+    next() // 直接放行
   }
 })
